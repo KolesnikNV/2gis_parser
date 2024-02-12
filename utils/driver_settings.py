@@ -35,5 +35,4 @@ async def get_driver():
     )
 
     driver = webdriver.Chrome(options=options)
-    driver.set_page_load_timeout(600)
     return driver

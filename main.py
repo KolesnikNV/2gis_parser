@@ -30,6 +30,7 @@ from utils.elements import (
     get_elements_text,
     make_scroll,
     move_to_element,
+    get_elements_href,
 )
 
 load_dotenv()
@@ -122,7 +123,8 @@ async def run_parser(city, search_query, current_page_number, items_counts):
         for i in range(current_page_number, pages + 1):
             try:
                 main_block = driver.find_element(By.XPATH, xpathes.main_block)
-
+                # a = await get_elements_href(driver, xpathes.sss)
+                # print(a)
                 for item in range(1, 13):
                     try:
                         if main_block.find_element(By.XPATH, f"div[{item}]").get_attribute("class"):
@@ -172,8 +174,8 @@ async def run_parser(city, search_query, current_page_number, items_counts):
     except WebDriverException:
         print(f"Произошло исключение WebDriverException во втором блоке")
         driver.quit()
-        await asyncio.sleep(0.1)
-        await run_parser(city, search_query, current_page_number, items_counts)
+        save_data_to_csv(data_in_memory, city, search_query)
+        await get_excel(city, search_query)
     except KeyboardInterrupt:
         driver.quit()
         save_data_to_csv(data_in_memory, city, search_query)
@@ -181,8 +183,8 @@ async def run_parser(city, search_query, current_page_number, items_counts):
 
 
 async def main():
-    city = "samara"
-    search_query = "Магазин%20техники"
+    city = "moscow"
+    search_query = "Магазин%20телефонов"
     current_page_number = 1
     await run_parser(city, search_query, current_page_number, 0)
 
